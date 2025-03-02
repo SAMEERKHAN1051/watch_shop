@@ -7,7 +7,7 @@ import 'package:watch_shop/screen/auth/signup_page.dart';
 import 'package:watch_shop/screen/feature/home_page.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 12.0),
-                Container(
+                SizedBox(
                   width: double.infinity, // Makes the button take up full width
                   child: ElevatedButton(
                     onPressed: handleSubmit,

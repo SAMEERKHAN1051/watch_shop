@@ -23,7 +23,7 @@ class FirstPage extends StatelessWidget {
         children: [
           Center(child: Image.asset('assets/splash_screen_images/1.png')),
           SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: 200,
             child: Text(
               'Numerous free trial courses',
@@ -36,7 +36,7 @@ class FirstPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: 230,
             child: Text(
               'Free courses for you to find your way to learning',

@@ -93,6 +93,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   bool emailBol = false;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -204,7 +205,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ),
                 SizedBox(height: 12.0),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: handleSubmit,

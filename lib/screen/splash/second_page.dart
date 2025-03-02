@@ -23,7 +23,7 @@ class SecondPage extends StatelessWidget {
         children: [
           Center(child: Image.asset('assets/splash_screen_images/2.png')),
           SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: 200,
             child: Text(
               'Quick and easy learning',
@@ -36,7 +36,7 @@ class SecondPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: 230,
             child: Text(
               'Easy and fast learning at any time to help you improve various skills',

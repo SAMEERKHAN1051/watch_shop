@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:watch_shop/widget/card/wishcard.dart';
+import 'package:watch_shop/widget/typography/screentitle.dart';
 
 class WishPage extends StatefulWidget {
   const WishPage({super.key});
@@ -10,26 +12,37 @@ class WishPage extends StatefulWidget {
 class _WishPageState extends State<WishPage> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Center(
-            child: Text(
-              'Welcome to the Home Page',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        SizedBox(width: 16),
-        Expanded(
-          child: Center(
-            child: Text(
-              'This is a simple Flutter app with a Home Page',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ),
-      ],
+    return Scaffold(
+      body: Column(
+        children: [
+          Screentitle(title: "Wish"),
+          Column(
+            children: [
+             Wishcard(
+              title: "Wrist Watch For Girls",
+              favoriteBol: true,
+              time: "just now",
+             ),
+             Wishcard(
+              title: "Wrist Watch For Girls",
+              favoriteBol: false,
+              time: "just now",
+             ),
+             Wishcard(
+              title: "Wrist Watch For Girls",
+              favoriteBol: false,
+              time: "just now",
+             ),
+             Wishcard(
+              title: "Wrist Watch For Girls",
+              favoriteBol: true,
+              time: "just now",
+             ),
+              
+            ],
+          )
+        ],
+      ),
     );
   }
 }

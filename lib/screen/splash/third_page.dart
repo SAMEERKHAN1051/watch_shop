@@ -15,7 +15,7 @@ class ThirdPage extends StatelessWidget {
         children: [
           Center(child: Image.asset('assets/splash_screen_images/3.png')),
           SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: 200,
             child: Text(
               'Create your own study plan',
@@ -28,7 +28,7 @@ class ThirdPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: 230,
             child: Text(
               'Study according to the study plan, make study more motivated',
