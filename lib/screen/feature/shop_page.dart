@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:watch_shop/constant/constantdata.dart';
+import 'package:watch_shop/widget/card/shopcard.dart';
 import 'package:watch_shop/widget/typography/screentitle.dart';
 
 class ShopPage extends StatefulWidget {
@@ -11,18 +13,25 @@ class ShopPage extends StatefulWidget {
 class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       body: Column(
         children: [
           Screentitle(title: "Shop"),
-          Column(
-            children: [
-              Text("data"),
-              Text("data"),
-              Text("data"),
-              Text("data"),
-              Text("data"),
-            ],
+          SizedBox(
+            height: 20.0,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: watchData.length,
+              itemBuilder: (context, index) {
+                final watch = watchData[index];
+                return Shopcard(
+                  title: watch['title'] ?? '',
+                  brand: watch['brand'] ?? '',
+                  price: watch['price'] ?? '',
+                );
+              },
+            ),
           )
         ],
       ),

@@ -46,8 +46,8 @@ class _NavigationbarState extends State<Navigationbar> {
         ],
         onTap: _onItemTapped, // Handle index change
         color: ColorConstant.mainTextColor,
-        backgroundColor: ColorConstant.textColor,
-        buttonBackgroundColor: ColorConstant.subPrimaryColor,
+        backgroundColor: ColorConstant.primaryColor,
+        buttonBackgroundColor: ColorConstant.mainTextColor,
       ),
     );
   }
