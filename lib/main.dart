@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/admin/adminpanel.dart';
 import 'package:watch_shop/screen/admin/feature/user/userlist.dart';
 import 'package:watch_shop/screen/auth/login_page.dart';
 import 'package:watch_shop/screen/user/UserPanel.dart';
+import 'package:watch_shop/screen/user/feature/review/addreview.dart';
+import 'package:watch_shop/screen/user/feature/watch/singlewatch.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -24,7 +27,8 @@ class MyApp extends StatelessWidget {
       title: 'Watch Shop',
       theme: ThemeData(
         fontFamily: 'Poppins',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white10),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: ColorConstant.primaryColor),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
