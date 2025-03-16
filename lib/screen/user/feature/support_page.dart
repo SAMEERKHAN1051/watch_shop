@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/widget/typography/screentitle.dart';
+import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class SupportPage extends StatefulWidget {
+  const SupportPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SupportPage> createState() => _SupportPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SupportPageState extends State<SupportPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return Scaffold(
       body: Column(
         children: [
-          Screentitle(title: "Home"),
+          Screentitle(title: "Support"),
           Column(
             children: [
               Text("data"),

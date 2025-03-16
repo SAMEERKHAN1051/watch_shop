@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:watch_shop/widget/navigationBar/navbutton.dart';
-import 'package:watch_shop/widget/navigationBar/navcustom.dart';
-import 'package:watch_shop/widget/navigationBar/navpainter.dart';
+import 'package:watch_shop/screen/user/widget/navigationBar/navbutton.dart';
+import 'package:watch_shop/screen/user/widget/navigationBar/navcustom.dart';
+import 'package:watch_shop/screen/user/widget/navigationBar/navpainter.dart';
 
 typedef _LetIndexPage = bool Function(int value);
 

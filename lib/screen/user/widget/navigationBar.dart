@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/feature/home_page.dart';
-import 'package:watch_shop/screen/feature/profile_page.dart';
-import 'package:watch_shop/screen/feature/shop_page.dart';
-import 'package:watch_shop/screen/feature/support_page.dart';
-import 'package:watch_shop/screen/feature/wish_page.dart';
-import 'package:watch_shop/widget/navigationBar/navigationbarcurved.dart';
+import 'package:watch_shop/screen/user/feature/home_page.dart';
+import 'package:watch_shop/screen/user/feature/profile_page.dart';
+import 'package:watch_shop/screen/user/feature/shop_page.dart';
+import 'package:watch_shop/screen/user/feature/support_page.dart';
+import 'package:watch_shop/screen/user/feature/wish_page.dart';
+import 'package:watch_shop/screen/user/widget/navigationBar/navigationbarcurved.dart';
 
 class Navigationbar extends StatefulWidget {
   const Navigationbar({super.key});
@@ -15,12 +15,12 @@ class Navigationbar extends StatefulWidget {
 }
 
 class _NavigationbarState extends State<Navigationbar> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
 
   final List<Widget> _pages = [
-    HomePage(),
-    ShopPage(),
     SupportPage(),
+    ShopPage(),
+    HomePage(),
     WishPage(),
     ProfilePage(),
   ];
@@ -38,9 +38,9 @@ class _NavigationbarState extends State<Navigationbar> {
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
         items: const [
-          Icon(Icons.home, size: 30),
-          Icon(Icons.shopping_cart, size: 30),
           Icon(Icons.watch, size: 30),
+          Icon(Icons.shopping_cart, size: 30),
+          Icon(Icons.home, size: 30),
           Icon(Icons.favorite, size: 30),
           Icon(Icons.person, size: 30),
         ],

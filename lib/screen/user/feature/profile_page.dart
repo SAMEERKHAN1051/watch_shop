@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/feature/edit_account_page.dart';
-import 'package:watch_shop/screen/feature/help_page.dart';
-import 'package:watch_shop/screen/feature/setting_page.dart';
-import 'package:watch_shop/screen/feature/wish_page.dart';
-import 'package:watch_shop/widget/typography/screentitle.dart';
+import 'package:watch_shop/screen/user/feature/edit_account_page.dart';
+import 'package:watch_shop/screen/user/feature/help_page.dart';
+import 'package:watch_shop/screen/user/feature/setting_page.dart';
+import 'package:watch_shop/screen/user/feature/wish_page.dart';
+import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'package:watch_shop/constant/color_constant.dart';
+import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
 import 'package:watch_shop/screen/auth/login_page.dart';
 
 class SignupPage extends StatefulWidget {
@@ -20,75 +19,48 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController number = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
-  void handleSubmit() async {
-    print('Button Pressed');
 
-    // Validate input fields
+  void handleSubmit() async {
     if (email.text.isEmpty ||
         password.text.isEmpty ||
         number.text.isEmpty ||
         userName.text.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Please fill in all fields",
-        backgroundColor: ColorConstant.primaryColor,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AllSnackbar.errorSnackbar("Please fill in all fields");
       return;
     }
 
-    // Password validation (minimum length check as an example)
     if (password.text.length < 6) {
-      Get.snackbar(
-        "Error",
-        "Password must be at least 6 characters long",
-        backgroundColor: ColorConstant.primaryColor,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AllSnackbar.errorSnackbar("Password Should Be 6 letter");
       return;
     }
 
     try {
-      // Create user with email and password
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email.text,
         password: password.text,
       );
+      await userCredential.user!.updateDisplayName(userName.text.trim()); 
 
-      // Save additional user details to Firestore
       await db.collection('users').doc(userCredential.user!.uid).set({
         'uId': userCredential.user!.uid,
-        'username': userName.text,
+        'displayName': userName.text,
         'email': email.text,
-        'isAdmin': true, // Assuming the user should be an admin by default
+        'isAdmin': false,
+        'status': false,
         'phone': number.text,
       });
 
-      print("User Created Successfully");
-
-      // Show success message
-      Get.snackbar(
-        "Success",
-        "User created successfully",
-        backgroundColor: ColorConstant.primaryColor,
-        snackPosition: SnackPosition.BOTTOM,
+      await userCredential.user!.reload();
+      AllSnackbar.successSnackbar("User created successfully.");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
-
-      // Optionally navigate to the login page (if you want to redirect after registration)
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => LoginPage()));
+      return;
     } catch (e) {
-      print("Error creating user: $e");
-      Get.snackbar(
-        "Error",
-        "Something went wrong. Please try again.",
-        backgroundColor: ColorConstant.primaryColor,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AllSnackbar.errorSnackbar("Something went wrong. Please try again.");
+      return;
     }
-
-    // Optionally print the email and password for debugging purposes (in a real app, avoid doing this)
-    print('Email: ${email.text}, Password: ${password.text}');
   }
 
   @override

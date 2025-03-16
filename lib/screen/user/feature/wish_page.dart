@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/constantdata.dart';
-import 'package:watch_shop/widget/card/wishcard.dart';
-import 'package:watch_shop/widget/typography/screentitle.dart';
+import 'package:watch_shop/screen/user/widget/card/wishcard.dart';
+import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
 
 class WishPage extends StatefulWidget {
   const WishPage({super.key});

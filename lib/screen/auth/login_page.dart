@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:watch_shop/constant/app_constant.dart';
 import 'package:watch_shop/constant/color_constant.dart';
+import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_shop/screen/auth/forgot_password_page.dart';
 import 'package:watch_shop/screen/auth/signup_page.dart';
-import 'package:watch_shop/screen/feature/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,22 +17,43 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
-  void handleSubmit() {
-    print('Button Pressed');
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
+  bool _obscurePassword = true;
+
+  void handleSubmit() async {
     if (email.text.isEmpty || password.text.isEmpty) {
-     
-      Get.snackbar(
-        "Error",
-        "Please fill in all fields",
-        backgroundColor: ColorConstant.primaryColor,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AllSnackbar.errorSnackbar("Please fill in all fields");
       return;
     }
 
-    print(email.text + password.text);
-    // Proceed with your authentication logic...
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      );
+
+      DocumentSnapshot userDoc =
+          await db.collection('users').doc(userCredential.user!.uid).get();
+
+      if (!userDoc.exists) {
+        AllSnackbar.errorSnackbar("User not found in the database.");
+        return;
+      }
+
+      bool isAdmin = userDoc['isAdmin'] ?? false;
+
+      if (isAdmin) {
+        Get.offAllNamed('/adminPanel');
+      } else {
+        Get.offAllNamed('/userPanel');
+      }
+
+      AllSnackbar.successSnackbar("Login Successful!");
+    } catch (e) {
+      print("Login Error: $e");
+      AllSnackbar.errorSnackbar("Invalid email or password.");
+    }
   }
 
   @override
@@ -59,14 +81,11 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            color: ColorConstant
-                .mainTextColor, // Background color for the container
+            color: ColorConstant.mainTextColor,
             padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 22.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment
-                  .start, // Optional, aligns text to the start
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // First text label and input field (Email)
                 Text(
                   'Your Email',
                   style: TextStyle(
@@ -85,9 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0), // Space between the two fields
-
-                // Second text label and input field (Password)
+                SizedBox(height: 16.0),
                 Text('Your Password',
                     style: TextStyle(
                         fontSize: 12,
@@ -95,9 +112,20 @@ class _LoginPageState extends State<LoginPage> {
                         fontFamily: "Poppins")),
                 TextField(
                   controller: password,
-                  obscureText: true,
+                  obscureText: _obscurePassword,
                   decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.visibility_off),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: ColorConstant.subTextColor, width: 1.0),
@@ -105,9 +133,25 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordPage()),
+                    );
+                  },
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
                 SizedBox(height: 12.0),
                 SizedBox(
-                  width: double.infinity, // Makes the button take up full width
+                  width: double.infinity,
                   child: ElevatedButton(
                     onPressed: handleSubmit,
                     style: ElevatedButton.styleFrom(
@@ -129,23 +173,21 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            color: ColorConstant
-                .mainTextColor, // Background color for the container
+            color: ColorConstant.mainTextColor,
             padding: EdgeInsets.only(
               left: 22.0,
               right: 22.0,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment
-                  .start, // Optional, aligns text to the start
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 5.0),
                 Row(
                   children: [
                     Expanded(
                       child: Divider(
-                        color: Colors.grey, // Line color
-                        thickness: 1, // Line thickness
+                        color: Colors.grey,
+                        thickness: 1,
                       ),
                     ),
                     Padding(
@@ -168,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have a account?",
+                      "Don't have an account?",
                       style: TextStyle(
                         color: ColorConstant.subTextColor,
                         fontFamily: "Poppins",

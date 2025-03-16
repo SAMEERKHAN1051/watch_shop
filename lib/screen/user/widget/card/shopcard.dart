@@ -4,13 +4,15 @@ import 'package:watch_shop/constant/color_constant.dart';
 class Shopcard extends StatefulWidget {
   final String title;
   final String brand;
-  final String price;
+  final int price;
+  final String id;
 
   const Shopcard({
     super.key,
     required this.title,
     required this.price,
     required this.brand,
+    required this.id,
   });
 
   @override
