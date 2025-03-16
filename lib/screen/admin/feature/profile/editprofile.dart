@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/admin/adminpanel.dart';
-import 'package:watch_shop/screen/admin/feature/dashboard/admindashoard.dart';
 import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
 import 'package:watch_shop/screen/admin/widget/typography/backtitle.dart';
 

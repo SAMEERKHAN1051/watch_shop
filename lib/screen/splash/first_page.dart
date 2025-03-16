@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/splash/second_page.dart';
+import 'package:watch_shop/screen/splash/third_page.dart';
 
 class FirstPage extends StatelessWidget {
   const FirstPage({super.key});
@@ -9,52 +10,71 @@ class FirstPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text('Skip',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
-          ],
-        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ThirdPage()),
+            ),
+            child: Text(
+              'Skip',
+              style: TextStyle(
+                fontSize: 16,
+                color: ColorConstant.primaryColor,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: Image.asset('assets/splash_screen_images/1.png')),
-          SizedBox(height: 20.0),
+          Center(
+            child: Image.asset(
+              'assets/splash_screen_images/1.png',
+              width: 250,
+            ),
+          ),
+          SizedBox(height: 30.0),
           SizedBox(
-            width: 200,
+            width: 250,
             child: Text(
-              'Numerous free trial courses',
+              'Timeless Style, Premium Watches',
               style: TextStyle(
-                  color: ColorConstant.textColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins'),
+                color: ColorConstant.textColor,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+              ),
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 16.0),
           SizedBox(
-            width: 230,
+            width: 300,
             child: Text(
-              'Free courses for you to find your way to learning',
+              'Discover exclusive collections and elevate your style with our finely crafted watches.',
               style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                  color: ColorConstant.subTextColor,
-                  fontFamily: 'Poppins'),
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: ColorConstant.subTextColor,
+                fontFamily: 'Poppins',
+              ),
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 30.0),
           ElevatedButton(
             onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SecondPage())),
+              context,
+              MaterialPageRoute(builder: (context) => SecondPage()),
+            ),
             style: ElevatedButton.styleFrom(
-              textStyle: TextStyle(fontFamily: 'Poppins'),
-              padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 28.0),
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
               foregroundColor: ColorConstant.mainTextColor,
               backgroundColor: ColorConstant.primaryColor,
               shape: RoundedRectangleBorder(
@@ -62,9 +82,13 @@ class FirstPage extends StatelessWidget {
               ),
             ),
             child: Text(
-              'Go to the second page',
+              'Explore Collection',
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

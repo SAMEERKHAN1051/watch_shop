@@ -9,64 +9,83 @@ class SecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text('Skip',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
-          ],
-        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ThirdPage()),
+            ),
+            child: Text(
+              'Skip',
+              style: TextStyle(
+                fontSize: 16,
+                color: ColorConstant.primaryColor,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: Image.asset('assets/splash_screen_images/2.png')),
-          SizedBox(height: 20.0),
+          Center(
+            child: Image.asset(
+              'assets/splash_screen_images/2.png',
+              width: 250,
+            ),
+          ),
+          SizedBox(height: 30.0),
           SizedBox(
-            width: 200,
+            width: 250,
             child: Text(
-              'Quick and easy learning',
+              'Find Your Perfect Timepiece',
               style: TextStyle(
-                  color: ColorConstant.textColor,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins'),
+                color: ColorConstant.textColor,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+              ),
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 16.0),
           SizedBox(
-            width: 230,
+            width: 300,
             child: Text(
-              'Easy and fast learning at any time to help you improve various skills',
+              'Browse our wide range of stylish watches and choose the one that defines your personality.',
               style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                  color: ColorConstant.subTextColor,
-                  fontFamily: 'Poppins'),
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: ColorConstant.subTextColor,
+                fontFamily: 'Poppins',
+              ),
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 30.0),
           ElevatedButton(
             onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ThirdPage())),
-                
+              context,
+              MaterialPageRoute(builder: (context) => ThirdPage()),
+            ),
             style: ElevatedButton.styleFrom(
-              textStyle: TextStyle(fontFamily: 'Poppins'),
-              padding: EdgeInsets.symmetric(
-                  vertical: 18.0, horizontal: 28.0), // Custom padding
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
               foregroundColor: ColorConstant.mainTextColor,
-              backgroundColor:
-                  ColorConstant.primaryColor, // Apply your custom color here
+              backgroundColor: ColorConstant.primaryColor,
               shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(12.0), // Set border radius as desired
+                borderRadius: BorderRadius.circular(12.0),
               ),
             ),
             child: Text(
-              'Go to the third page',
+              'Discover More',
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
             ),
           )
         ],

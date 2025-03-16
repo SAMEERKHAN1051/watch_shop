@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/color_constant.dart';
+import 'package:watch_shop/screen/user/feature/order/cart.dart';
 
 class Screentitle extends StatelessWidget {
   final String title;
@@ -29,17 +30,34 @@ class Screentitle extends StatelessWidget {
                   fontFamily: 'Poppins',
                 ),
               ),
-              CircleAvatar(
-                radius: 20,
-                child: ClipOval(
-                  child: Image.asset(
-                    "assets/splash_screen_images/1.png",
-                    width: 40,
-                    height: 40,
-                    fit: BoxFit.cover,
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => CartPage()));
+                    },
+                    icon: Icon(
+                      Icons.trolley,
+                      color: ColorConstant.primaryColor,
+                    ),
                   ),
-                ),
-              ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CircleAvatar(
+                    radius: 20,
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/splash_screen_images/1.png",
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

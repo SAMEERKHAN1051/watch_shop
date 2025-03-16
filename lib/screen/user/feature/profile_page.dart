@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:watch_shop/screen/auth/login_page.dart';
 import 'package:watch_shop/screen/user/feature/edit_account_page.dart';
 import 'package:watch_shop/screen/user/feature/help_page.dart';
 import 'package:watch_shop/screen/user/feature/setting_page.dart';
@@ -13,6 +15,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Future<void> _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,12 +50,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 20),
                     _buildListTile(
-                        context, "Favorite", Icons.favorite, WishPage()),
-                    _buildListTile(
-                        context, "Edit Account", Icons.edit, EditAccountPage()),
+                        context, "Favorite", Icons.favorite, const WishPage()),
+                    _buildListTile(context, "Edit Account", Icons.edit,
+                        const EditAccountPage()),
                     _buildListTile(context, "Settings & Privacy",
-                        Icons.settings, SettingPage()),
-                    _buildListTile(context, "Help", Icons.help, HelpPage()),
+                        Icons.settings, const SettingPage()),
+                    _buildListTile(
+                        context, "Help", Icons.help, const HelpPage()),
+                    ListTile(
+                      leading: const Icon(Icons.logout, color: Colors.red),
+                      title: const Text("Logout",
+                          style: TextStyle(fontSize: 16, color: Colors.red)),
+                      onTap: _logout,
+                    ),
+                    const Divider(),
                   ],
                 ),
               ),
@@ -70,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 context, MaterialPageRoute(builder: (context) => page));
           },
         ),
-        Divider(),
+        const Divider(),
       ],
     );
   }

@@ -5,7 +5,9 @@ import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/admin/adminpanel.dart';
 import 'package:watch_shop/screen/admin/feature/user/userlist.dart';
 import 'package:watch_shop/screen/auth/login_page.dart';
+import 'package:watch_shop/screen/splash/first_page.dart';
 import 'package:watch_shop/screen/user/UserPanel.dart';
+import 'package:watch_shop/screen/user/feature/order/cart.dart';
 import 'package:watch_shop/screen/user/feature/review/addreview.dart';
 import 'package:watch_shop/screen/user/feature/watch/singlewatch.dart';
 import 'firebase_options.dart';
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => LoginPage()),
+        GetPage(name: '/', page: () => FirstPage()),
         GetPage(name: '/userPanel', page: () => UserPanelScreen()),
         GetPage(name: '/adminPanel', page: () => AdminPanelScreen()),
       ],

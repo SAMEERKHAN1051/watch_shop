@@ -19,14 +19,14 @@ class DashboardService {
       int totalBrands = brandsSnapshot.size;
 
       // Count orders
-      // QuerySnapshot ordersSnapshot = await firestore.collection('orders').get();
-      // int totalOrders = ordersSnapshot.size;
+      QuerySnapshot ordersSnapshot = await firestore.collection('orders').get();
+      int totalOrders = ordersSnapshot.size;
 
       return {
         "total_users": totalUsers,
         "total_watches": totalWatches,
         "total_brands": totalBrands,
-        "total_orders": totalBrands,
+        "total_orders": totalOrders,
       };
     } catch (e) {
       print("Error fetching dashboard data: $e");

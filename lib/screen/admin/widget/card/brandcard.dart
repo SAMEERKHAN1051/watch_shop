@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/admin/feature/brand/managebrand.dart';
-import 'package:watch_shop/screen/admin/feature/watch/managewatch.dart';
 
 class BrandCard extends StatelessWidget {
   final String title;

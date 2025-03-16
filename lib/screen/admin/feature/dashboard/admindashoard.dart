@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watch_shop/screen/admin/feature/brand/allbrand.dart';
+import 'package:watch_shop/screen/admin/feature/order/allorder.dart';
 import 'package:watch_shop/screen/admin/feature/user/userlist.dart';
 import 'package:watch_shop/screen/admin/feature/watch/allwatch.dart';
 import 'package:watch_shop/screen/admin/widget/card/dashboardcard.dart';
@@ -61,7 +62,7 @@ class AdminDashboard extends StatelessWidget {
                     "length": data["total_orders"].toString(),
                     "icon": Icons.shopping_cart,
                     "color": Colors.red,
-                    'page': Userlist()
+                    'page': AllOrder()
                   },
                 ];
 

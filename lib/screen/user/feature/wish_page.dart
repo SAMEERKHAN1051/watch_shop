@@ -12,8 +12,8 @@ class WishPage extends StatefulWidget {
 }
 
 class _WishPageState extends State<WishPage> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   User? currentUser;
   List<Map<String, dynamic>> wishlistItems = [];
   bool isLoading = true;
@@ -21,35 +21,58 @@ class _WishPageState extends State<WishPage> {
   @override
   void initState() {
     super.initState();
-    currentUser = auth.currentUser;
+    currentUser = _auth.currentUser;
     fetchWishlist();
   }
 
-  void fetchWishlist() async {
-    if (currentUser != null) {
-      final snapshot = await db
+  Future<void> fetchWishlist() async {
+    if (currentUser == null) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+    print(currentUser);
+
+    try {
+      // Fetch only current user's wishlist
+      final snapshot = await _db
           .collection('wishlist')
-          .where('userId', isEqualTo: currentUser!.uid)
+          // .where('userId', isEqualTo: currentUser!.email) // ✅ Use UID
           .orderBy('createdAt', descending: true)
-          .get();
+          .get(); // Use .get() instead of .snapshots()
 
       List<Map<String, dynamic>> tempList = [];
+      print(snapshot);
 
-      for (var doc in snapshot.docs) {
-        // You can fetch product details here using productId if needed
+      // Fetch product details
+      await Future.wait(snapshot.docs.map((doc) async {
+        final productId = doc['productId'];
+        print(productId);
+
+        final productSnapshot =
+            await _db.collection('watches').doc(productId).get();
+
+        final productData = productSnapshot.data();
+        print('Product Data: $productData');
+
         tempList.add({
-          'title': doc[
-              'productId'], // Replace with actual product title after fetching
+          'title': productData != null
+              ? productData['name'] ?? 'No Title'
+              : 'Unknown Product',
           'favoriteBol': true,
-          'time': doc['createdAt']?.toDate().toString() ?? '',
+          'time': (doc['createdAt'] != null)
+              ? doc['createdAt'].toDate().toString()
+              : '',
         });
-      }
+      }));
 
       setState(() {
         wishlistItems = tempList;
         isLoading = false;
       });
-    } else {
+    } catch (e) {
+      print('Error fetching wishlist: $e');
       setState(() {
         isLoading = false;
       });
@@ -62,12 +85,12 @@ class _WishPageState extends State<WishPage> {
       body: Column(
         children: [
           Screentitle(title: "Wish"),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           Expanded(
             child: isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : wishlistItems.isEmpty
-                    ? Center(child: Text("No items in Wishlist"))
+                    ? const Center(child: Text("No items in Wishlist"))
                     : ListView.builder(
                         itemCount: wishlistItems.length,
                         itemBuilder: (context, index) {

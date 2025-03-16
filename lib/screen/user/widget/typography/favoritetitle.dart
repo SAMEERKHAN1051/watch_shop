@@ -2,13 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/color_constant.dart';
+import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_shop/screen/user/feature/order/cart.dart';
 
-class FavoriteTitle extends StatefulWidget {
+class FavoriteTitle extends StatefulWidget implements PreferredSizeWidget {
   final String id;
   const FavoriteTitle({super.key, required this.id});
 
   @override
   State<FavoriteTitle> createState() => _FavoriteTitleState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class _FavoriteTitleState extends State<FavoriteTitle> {
@@ -24,51 +29,66 @@ class _FavoriteTitleState extends State<FavoriteTitle> {
     checkWishlist();
   }
 
-  void checkWishlist() async {
+  Future<void> checkWishlist() async {
     if (currentUser != null) {
-      final snapshot = await db
-          .collection('wishlist')
-          .where('userId', isEqualTo: currentUser!.uid)
-          .where('productId', isEqualTo: widget.id)
-          .get();
+      try {
+        final snapshot = await db
+            .collection('wishlist')
+            .where('userId', isEqualTo: currentUser!.uid)
+            .where('productId', isEqualTo: widget.id)
+            .get();
 
-      setState(() {
-        isWishlisted = snapshot.docs.isNotEmpty;
-      });
+        if (mounted) {
+          setState(() {
+            isWishlisted = snapshot.docs.isNotEmpty;
+          });
+        }
+      } catch (e) {
+        // Handle error
+        debugPrint("Error checking wishlist: $e");
+      }
     }
   }
 
-  void toggleWishlist() async {
+  Future<void> toggleWishlist() async {
     if (currentUser == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please log in to use wishlist")),
-      );
+      AllSnackbar.errorSnackbar("Please log in to use wishlist");
       return;
     }
 
-    if (isWishlisted) {
-      // Remove from wishlist
-      final snapshot = await db
-          .collection('wishlist')
-          .where('userId', isEqualTo: currentUser!.uid)
-          .where('productId', isEqualTo: widget.id)
-          .get();
+    try {
+      if (isWishlisted) {
+        // Remove from wishlist
+        final snapshot = await db
+            .collection('wishlist')
+            .where('userId', isEqualTo: currentUser!.uid)
+            .where('productId', isEqualTo: widget.id)
+            .get();
 
-      for (var doc in snapshot.docs) {
-        await db.collection('wishlist').doc(doc.id).delete();
+        for (var doc in snapshot.docs) {
+          await db.collection('wishlist').doc(doc.id).delete();
+        }
+        AllSnackbar.successSnackbar("Watch Remove From Wishlist");
+      } else {
+        // Add to wishlist
+        await db.collection('wishlist').add({
+          'userId': currentUser!.email,
+          'productId': widget.id,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+        AllSnackbar.successSnackbar("Watch Add To Wishlist");
       }
-    } else {
-      // Add to wishlist
-      await db.collection('wishlist').add({
-        'userId': currentUser!.uid,
-        'productId': widget.id,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-    }
 
-    setState(() {
-      isWishlisted = !isWishlisted;
-    });
+      if (mounted) {
+        setState(() {
+          isWishlisted = !isWishlisted;
+        });
+      }
+    } catch (e) {
+      // Handle error
+      AllSnackbar.errorSnackbar("Error updating wishlist");
+      debugPrint("Error toggling wishlist: $e");
+    }
   }
 
   @override
@@ -99,6 +119,19 @@ class _FavoriteTitleState extends State<FavoriteTitle> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => CartPage()));
+            },
+            icon: Icon(
+              Icons.trolley,
+              color: ColorConstant.primaryColor,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
           IconButton(
             onPressed: toggleWishlist,
             icon: Icon(

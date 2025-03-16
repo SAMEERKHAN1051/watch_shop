@@ -203,24 +203,20 @@ class _SingleWatchState extends State<SingleWatch> {
         String uid = user.uid;
 
         CollectionReference cartRef = FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
             .collection('cart');
-
-        // Check if watch already exists
         QuerySnapshot existing =
             await cartRef.where('watchId', isEqualTo: widget.id).get();
         if (existing.docs.isNotEmpty) {
-          // Update quantity
           var docId = existing.docs.first.id;
           await cartRef.doc(docId).update({
             'quantity': quantity,
             'updatedAt': FieldValue.serverTimestamp(),
           });
         } else {
-          // Add new
+
           await cartRef.add({
             'watchId': widget.id,
+            'userId': uid,
             'name': watchName,
             'price': price,
             'stock': stock,
