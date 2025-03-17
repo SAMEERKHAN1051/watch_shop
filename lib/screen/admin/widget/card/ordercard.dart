@@ -83,7 +83,7 @@ class _OrderCardState extends State<OrderCard> {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
-                child: Text(_currentStatus ? "Inactive" : "Active"),
+                child: Text(_currentStatus ? "Cancel" : "Active"),
               ),
             ],
           ),

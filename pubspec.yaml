@@ -49,3 +49,8 @@ flutter:
           weight: 700
         - asset: assets/fonts/Raleway-Italic.ttf
           style: italic
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"

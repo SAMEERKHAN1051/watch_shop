@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:watch_shop/screen/admin/feature/brand/managebrand.dart';
 import 'package:watch_shop/screen/admin/widget/card/brandcard.dart';
+import 'package:watch_shop/screen/admin/widget/card/ordercard.dart';
 import 'package:watch_shop/screen/admin/widget/typography/screentitle.dart';
 import 'package:watch_shop/screen/admin/widget/typography/titlebutton.dart';
 
@@ -81,7 +82,7 @@ class _AllOrderState extends State<AllOrder> {
                 itemCount: _filteredOrder.length,
                 itemBuilder: (context, index) {
                   var doc = _filteredOrder[index];
-                  return BrandCard(title: doc['email'], id: doc.id);
+                  return OrderCard(title: doc['name'], email: doc['email'], number: doc['phone'] ,status: true, id: doc.id);
                 },
               );
             },
