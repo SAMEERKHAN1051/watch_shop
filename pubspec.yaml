@@ -1,4 +1,4 @@
-name: watch_shop
+name: watch_hub
 description: "A new Flutter project."
 
 publish_to: 'none' # Prevents accidental publishing to pub.dev
@@ -38,7 +38,7 @@ flutter:
     - assets/splash_screen_images/3.png
     - assets/svg/close-one.svg
     - assets/icon/google.png
-    - assets/fonts/ # Ensure this directory exists for Poppins font files
+    - assets/fonts/ 
 
   # Custom Fonts (Poppins)
   fonts:
