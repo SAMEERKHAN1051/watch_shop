@@ -14,7 +14,6 @@ class ShopPage extends StatefulWidget {
 class _ShopPageState extends State<ShopPage> {
   final TextEditingController _searchController = TextEditingController();
 
-  // Filters
   String selectedBrand = "All";
   RangeValues selectedPriceRange = const RangeValues(0, 5000);
   List<String> availableBrands = [];
@@ -23,7 +22,7 @@ class _ShopPageState extends State<ShopPage> {
   void initState() {
     super.initState();
     _searchController.addListener(() {
-      setState(() {}); // Rebuild on search input change
+      setState(() {});
     });
   }
 
@@ -47,7 +46,6 @@ class _ShopPageState extends State<ShopPage> {
                   const Text('Filters',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  // Brand Dropdown
                   DropdownButton<String>(
                     value: selectedBrand,
                     isExpanded: true,
@@ -62,7 +60,6 @@ class _ShopPageState extends State<ShopPage> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  // Price Range Slider
                   Text(
                       "Price Range: \$${selectedPriceRange.start.round()} - \$${selectedPriceRange.end.round()}"),
                   RangeSlider(
@@ -84,7 +81,7 @@ class _ShopPageState extends State<ShopPage> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      setState(() {}); // Apply filters
+                      setState(() {});
                     },
                     child: const Text("Apply Filters"),
                   ),
@@ -142,42 +139,48 @@ class _ShopPageState extends State<ShopPage> {
                           style: TextStyle(fontSize: 12)));
                 }
 
+                var doc = snapshot.data!.docs;
+                print('Data fetched: ${snapshot.data!.docs.length} items');
+
                 var allDocs = snapshot.data!.docs;
 
-                // Populate brand list dynamically
                 availableBrands = allDocs
-                    .map((doc) => doc['brand'].toString())
+                    .map((doc) => doc['brand']?.toString() ?? 'Unknown')
                     .toSet()
                     .toList();
 
-                // Apply filters dynamically
                 var filteredWatches = allDocs.where((watch) {
-                  String name = watch['name'].toLowerCase();
-                  String brand = watch['brand'].toLowerCase();
-                  double price = watch['price'].toDouble();
+                  String name = watch['name']?.toString().toLowerCase() ?? '';
+                  String brand = watch['brand']?.toString().toLowerCase() ?? '';
+                  double price = (watch['price'] as double?) ?? 0.0;
 
-                  bool matchesSearch =
+                  bool matchesSearch = _searchController.text.isEmpty ||
                       name.contains(_searchController.text.toLowerCase()) ||
-                          brand.contains(_searchController.text.toLowerCase());
+                      brand.contains(_searchController.text.toLowerCase());
 
-                  bool matchesBrand =
-                      selectedBrand == "All" || watch['brand'] == selectedBrand;
+                  // bool matchesBrand =
+                  //     selectedBrand == "All" || brand == selectedBrand;
 
-                  bool matchesPrice = price >= selectedPriceRange.start &&
-                      price <= selectedPriceRange.end;
+                  // bool matchesPrice = price >= selectedPriceRange.start &&
+                  //     price <= selectedPriceRange.end;
 
-                  return matchesSearch && matchesBrand && matchesPrice;
+                  return matchesSearch 
+                  ;
                 }).toList();
+
+                print(filteredWatches);
 
                 return ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   itemCount: filteredWatches.length,
                   itemBuilder: (context, index) {
                     var doc = filteredWatches[index];
+                    print(doc);
                     return Shopcard(
-                      title: doc['name'],
-                      price: doc['price'],
-                      brand: doc['brand'],
+                      title: doc['name'] ?? 'Unnamed Watch',
+                      price: doc['price'] ?? 0.0,
+                      brand: doc['brand'] ?? 'Unknown Brand',
+                      image: doc['image'] ,
                       id: doc.id,
                     );
                   },

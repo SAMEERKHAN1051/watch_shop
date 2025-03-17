@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
 import 'package:watch_shop/screen/user/UserPanel.dart';
@@ -21,6 +26,7 @@ class _EditProfileState extends State<EditProfile> {
 
   User? _currentUser;
   bool _isLoading = true;
+  String? _base64Image;  // To store the base64 image string
 
   @override
   void initState() {
@@ -36,6 +42,7 @@ class _EditProfileState extends State<EditProfile> {
     super.dispose();
   }
 
+  // Fetch user data from Firebase Firestore
   Future<void> _fetchUserData() async {
     _currentUser = FirebaseAuth.instance.currentUser;
     if (_currentUser != null) {
@@ -49,12 +56,43 @@ class _EditProfileState extends State<EditProfile> {
           _nameController.text = data['displayName'] ?? '';
           _emailController.text = data['email'] ?? '';
           _phoneController.text = data['phone'] ?? '';
+          _base64Image = data['image'] ?? ''; // Fetch the image URL or base64 string
           _isLoading = false;
         });
       }
     }
   }
 
+  // Pick image using ImagePicker and convert to base64
+  Future<void> _pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+
+    if (image != null) {
+      // For Web
+      if (kIsWeb) {
+        final bytes = await image.readAsBytes();
+        String base64String = base64Encode(bytes);
+        setState(() {
+          _base64Image = base64String;
+        });
+        AllSnackbar.successSnackbar("Image picked successfully");
+      } else {
+        // For Mobile
+        File mobileImage = File(image.path);
+        final bytes = await mobileImage.readAsBytes();
+        String base64String = base64Encode(bytes);
+        setState(() {
+          _base64Image = base64String;
+        });
+        AllSnackbar.successSnackbar("Image picked successfully");
+      }
+    } else {
+      print("No image selected.");
+    }
+  }
+
+  // Save the profile data (name, email, phone, image)
   Future<void> _saveProfile() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -65,6 +103,7 @@ class _EditProfileState extends State<EditProfile> {
           'displayName': _nameController.text,
           'email': _emailController.text,
           'phone': _phoneController.text,
+          'image': _base64Image,  // Save the base64 encoded image
         });
         AllSnackbar.successSnackbar('Profile updated successfully');
         Navigator.pushReplacement(
@@ -84,7 +123,7 @@ class _EditProfileState extends State<EditProfile> {
           ? Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                Screentitle(title: "Edit Profile",),
+                Screentitle(title: "Edit Profile"),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Form(
@@ -92,6 +131,22 @@ class _EditProfileState extends State<EditProfile> {
                     child: ListView(
                       shrinkWrap: true,
                       children: [
+                        // Profile Image Uploader
+                        GestureDetector(
+                          onTap: () => _pickImage(ImageSource.gallery),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: _base64Image != null && _base64Image!.isNotEmpty
+                                ? MemoryImage(base64Decode(_base64Image!))  // Decode base64 and show image
+                                : AssetImage("assets/splash_screen_images/1.png") as ImageProvider,
+                            child: _base64Image == null || _base64Image!.isEmpty
+                                ? Icon(Icons.camera_alt, size: 30, color: ColorConstant.mainTextColor)
+                                : null,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        // Name Field
                         _buildTextField(
                           label: 'Name',
                           controller: _nameController,
@@ -103,6 +158,7 @@ class _EditProfileState extends State<EditProfile> {
                           },
                         ),
                         SizedBox(height: 16),
+                        // Email Field
                         _buildTextField(
                           label: 'Email',
                           controller: _emailController,
@@ -116,6 +172,7 @@ class _EditProfileState extends State<EditProfile> {
                           },
                         ),
                         SizedBox(height: 16),
+                        // Phone Field
                         _buildTextField(
                           label: 'Phone Number',
                           controller: _phoneController,
@@ -127,6 +184,7 @@ class _EditProfileState extends State<EditProfile> {
                           },
                         ),
                         SizedBox(height: 30),
+                        // Save Profile Button
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -140,7 +198,7 @@ class _EditProfileState extends State<EditProfile> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                             ),
-                            child: Text("Edit Profile"),
+                            child: Text("Save Profile"),
                           ),
                         ),
                       ],
@@ -152,6 +210,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+  // Helper function to create text input fields
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,

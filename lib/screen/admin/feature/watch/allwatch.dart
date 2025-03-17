@@ -98,6 +98,7 @@ class _AllwatchState extends State<Allwatch> {
                     price: doc['price'],
                     brand: doc['brand'],
                     id: doc.id,
+                    image : doc['image']
                   );
                 },
               );

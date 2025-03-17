@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/admin/feature/watch/managewatch.dart';
@@ -7,6 +9,7 @@ class ShopCard extends StatelessWidget {
   final String brand;
   final int price;
   final String id;
+  final String image;
 
   const ShopCard({
     super.key,
@@ -14,6 +17,7 @@ class ShopCard extends StatelessWidget {
     required this.price,
     required this.brand,
     required this.id,
+    required this.image
   });
 
   @override
@@ -41,12 +45,12 @@ class ShopCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    "assets/splash_screen_images/1.png",
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.memory(
+                              base64Decode(image),
+                              width: 50, // You can adjust the size
+                              height: 150,
+                              fit: BoxFit.cover,
+                            ),
                 ),
                 const SizedBox(width: 12), // Adjusted spacing
                 Column(

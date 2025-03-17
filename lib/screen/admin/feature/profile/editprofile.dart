@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/admin/adminpanel.dart';
 import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
@@ -21,6 +26,9 @@ class _EditProfileState extends State<EditProfile> {
 
   User? _currentUser;
   bool _isLoading = true;
+  String? base64Image;
+
+  File? _pickedImage;
 
   @override
   void initState() {
@@ -34,6 +42,36 @@ class _EditProfileState extends State<EditProfile> {
     _emailController.dispose();
     _phoneController.dispose();
     super.dispose();
+  }
+
+  Future<void> pickimage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+
+    if (image != null) {
+      if (kIsWeb) {
+        Uint8List webImage = await image.readAsBytes();
+        String base64String = base64Encode(webImage);
+        setState(() {
+          base64Image = base64String;
+          _pickedImage = null;
+        });
+        AllSnackbar.successSnackbar("Image picked");
+      } else {
+        File mobileImage = File(image.path);
+        final bytes = await mobileImage.readAsBytes();
+        String base64String = base64Encode(bytes);
+
+        setState(() {
+          base64Image = base64String;
+          _pickedImage = mobileImage;
+        });
+
+        AllSnackbar.successSnackbar("Image picked");
+      }
+    } else {
+      print("No image picked.");
+    }
   }
 
   Future<void> _fetchUserData() async {
@@ -50,6 +88,7 @@ class _EditProfileState extends State<EditProfile> {
           _emailController.text = data['email'] ?? '';
           _phoneController.text = data['phone'] ?? '';
           _isLoading = false;
+          base64Image = data['image'] ?? null;
         });
       }
     }
@@ -65,6 +104,7 @@ class _EditProfileState extends State<EditProfile> {
           'displayName': _nameController.text,
           'email': _emailController.text,
           'phone': _phoneController.text,
+          'image': base64Image
         });
         AllSnackbar.successSnackbar('Profile updated successfully');
         Navigator.pushReplacement(
@@ -92,6 +132,28 @@ class _EditProfileState extends State<EditProfile> {
                     child: ListView(
                       shrinkWrap: true,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: ElevatedButton(
+                            onPressed: () => pickimage(ImageSource.gallery),
+                            child: Text('Pick Image'),
+                          ),
+                        ),
+                        if (_pickedImage != null)
+                          Image.file(
+                            _pickedImage!,
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          )
+                        else if (base64Image != null)
+                          Image.memory(
+                            base64Decode(base64Image!),
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        SizedBox(height: 16),
                         _buildTextField(
                           label: 'Name',
                           controller: _nameController,

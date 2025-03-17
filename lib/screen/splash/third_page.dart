@@ -17,6 +17,7 @@ class ThirdPage extends StatelessWidget {
             child: Image.asset(
               'assets/splash_screen_images/3.png',
               width: 250,
+              height: 250,
             ),
           ),
           SizedBox(height: 30.0),

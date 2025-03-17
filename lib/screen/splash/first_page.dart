@@ -37,6 +37,7 @@ class FirstPage extends StatelessWidget {
             child: Image.asset(
               'assets/splash_screen_images/1.png',
               width: 250,
+              height: 250,
             ),
           ),
           SizedBox(height: 30.0),

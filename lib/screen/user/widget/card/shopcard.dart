@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:watch_shop/constant/color_constant.dart';
 import 'package:watch_shop/screen/user/feature/watch/singlewatch.dart';
@@ -5,8 +7,9 @@ import 'package:watch_shop/screen/user/feature/watch/singlewatch.dart';
 class Shopcard extends StatefulWidget {
   final String title;
   final String brand;
-  final int price;
+  final double price; // changed to double for better flexibility
   final String id;
+  final String image;
 
   const Shopcard({
     super.key,
@@ -14,6 +17,7 @@ class Shopcard extends StatefulWidget {
     required this.price,
     required this.brand,
     required this.id,
+    required this.image,
   });
 
   @override
@@ -27,6 +31,7 @@ class _ShopcardState extends State<Shopcard> {
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
       child: InkWell(
         onTap: () {
+          // Single watch page navigation
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -51,13 +56,23 @@ class _ShopcardState extends State<Shopcard> {
           child: Row(
             children: [
               const SizedBox(width: 10),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.asset(
-                  "assets/splash_screen_images/1.png",
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: Colors.white,
+                child: ClipOval(
+                  child: widget.image.isNotEmpty
+                      ? Image.memory(
+                          base64Decode(widget.image),
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          "assets/splash_screen_images/1.png",
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
               const SizedBox(width: 20),
@@ -78,7 +93,7 @@ class _ShopcardState extends State<Shopcard> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '\$${widget.price}',
+                      '\$${widget.price.toStringAsFixed(2)}', // display price with two decimal points
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -96,6 +111,7 @@ class _ShopcardState extends State<Shopcard> {
                 ),
                 child: IconButton(
                   onPressed: () {
+                    // Same action for both tap and icon button
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -103,7 +119,8 @@ class _ShopcardState extends State<Shopcard> {
                       ),
                     );
                   },
-                  icon: Icon(Icons.trolley, color: ColorConstant.mainTextColor),
+                  icon: Icon(Icons.shopping_cart,
+                      color: ColorConstant.mainTextColor),
                 ),
               ),
             ],
