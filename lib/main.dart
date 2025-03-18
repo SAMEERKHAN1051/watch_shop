@@ -5,7 +5,6 @@ import 'package:watch_hub/constant/color_constant.dart';
 import 'package:watch_hub/screen/admin/adminpanel.dart';
 import 'package:watch_hub/screen/splash/first_page.dart';
 import 'package:watch_hub/screen/user/UserPanel.dart';
-import 'package:watch_hub/screen/user/feature/shop_page.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
