@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => ShopPage()),
+        GetPage(name: '/', page: () => FirstPage()),
         GetPage(name: '/userPanel', page: () => UserPanelScreen()),
         GetPage(name: '/adminPanel', page: () => AdminPanelScreen()),
       ],
