@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/user/widget/card/shopcard.dart';
-import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
+import 'package:watch_hub/screen/user/widget/card/shopcard.dart';
+import 'package:watch_hub/screen/user/widget/typography/screentitle.dart';
 
 class ShopPage extends StatefulWidget {
   final String? category;
@@ -97,35 +97,36 @@ class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Screentitle(title: "Shop"),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      labelText: 'Search',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
+      body: SingleChildScrollView(
+        // Added scroll view here
+        child: Column(
+          children: [
+            Screentitle(title: "Shop"),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        labelText: 'Search',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.filter_alt),
-                  onPressed: _showFilterSheet,
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.filter_alt),
+                    onPressed: _showFilterSheet,
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
+            const SizedBox(height: 10),
+            StreamBuilder<QuerySnapshot>(
               stream:
                   FirebaseFirestore.instance.collection('watches').snapshots(),
               builder: (context, snapshot) {
@@ -158,14 +159,7 @@ class _ShopPageState extends State<ShopPage> {
                       name.contains(_searchController.text.toLowerCase()) ||
                       brand.contains(_searchController.text.toLowerCase());
 
-                  // bool matchesBrand =
-                  //     selectedBrand == "All" || brand == selectedBrand;
-
-                  // bool matchesPrice = price >= selectedPriceRange.start &&
-                  //     price <= selectedPriceRange.end;
-
-                  return matchesSearch 
-                  ;
+                  return matchesSearch;
                 }).toList();
 
                 print(filteredWatches);
@@ -180,15 +174,15 @@ class _ShopPageState extends State<ShopPage> {
                       title: doc['name'] ?? 'Unnamed Watch',
                       price: doc['price'] ?? 0.0,
                       brand: doc['brand'] ?? 'Unknown Brand',
-                      image: doc['image'] ,
+                      image: doc['image'],
                       id: doc.id,
                     );
                   },
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/user/widget/typography/screentitle.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({super.key});
@@ -58,11 +58,12 @@ class _SupportPageState extends State<SupportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Screentitle(title: "Support"),
-          Expanded(
-            child: Padding(
+      body: SingleChildScrollView(
+        // Added SingleChildScrollView for scrollable content
+        child: Column(
+          children: [
+            const Screentitle(title: "Support"),
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,8 +120,8 @@ class _SupportPageState extends State<SupportPage> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

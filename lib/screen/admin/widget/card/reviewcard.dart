@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/admin/feature/review/singlereview.dart';
+import 'package:watch_hub/screen/admin/feature/review/singlereview.dart';
 
 class ReviewCard extends StatelessWidget {
   final String title;

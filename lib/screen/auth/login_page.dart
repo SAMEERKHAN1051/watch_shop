@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/auth/forgot_password_page.dart';
-import 'package:watch_shop/screen/auth/signup_page.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/auth/forgot_password_page.dart';
+import 'package:watch_hub/screen/auth/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

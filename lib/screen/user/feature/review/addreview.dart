@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/admin/widget/typography/backtitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/admin/widget/typography/backtitle.dart';
 
 class AddReview extends StatefulWidget {
-  final String id; 
+  final String id;
   const AddReview({super.key, required this.id});
 
   @override
@@ -26,12 +26,13 @@ class _AddReviewState extends State<AddReview> {
   void initState() {
     super.initState();
     currentUser = auth.currentUser;
-    fetchWatchData(); 
+    fetchWatchData();
   }
 
   void fetchWatchData() async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> doc = await db.collection('watches').doc(widget.id).get();
+      DocumentSnapshot<Map<String, dynamic>> doc =
+          await db.collection('watches').doc(widget.id).get();
 
       if (doc.exists) {
         setState(() {
@@ -89,95 +90,94 @@ class _AddReviewState extends State<AddReview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          BackTitle(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(
-              watchName.isEmpty ? "Loading..." : watchName,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.primaryColor,
+      body: SingleChildScrollView(
+        // Wrap the body in a SingleChildScrollView
+        child: Column(
+          children: [
+            BackTitle(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Text(
+                watchName.isEmpty ? "Loading..." : watchName,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstant.primaryColor,
+                ),
               ),
             ),
-          ),
-
-          Container(
-            color: ColorConstant.mainTextColor,
-            padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 22.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 16.0),
-
-                Text(
-                  'Comment',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorConstant.subTextColor,
-                    fontFamily: "Poppins",
-                  ),
-                ),
-                TextField(
-                  controller: commentController,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: ColorConstant.subTextColor, width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),
+            Container(
+              color: ColorConstant.mainTextColor,
+              padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 22.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.0),
+                  Text(
+                    'Comment',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: ColorConstant.subTextColor,
+                      fontFamily: "Poppins",
                     ),
                   ),
-                ),
-                SizedBox(height: 12.0),
-
-                Text(
-                  'Rating: ${rating.toStringAsFixed(1)}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorConstant.subTextColor,
-                    fontFamily: "Poppins",
-                  ),
-                ),
-                Slider(
-                  min: 1,
-                  max: 5,
-                  divisions: 4,
-                  value: rating,
-                  activeColor: ColorConstant.primaryColor,
-                  label: rating.toString(),
-                  onChanged: (value) {
-                    setState(() {
-                      rating = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 16.0),
-
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: handleSubmit,
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 18.0, horizontal: 28.0),
-                      foregroundColor: ColorConstant.mainTextColor,
-                      backgroundColor: ColorConstant.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
+                  TextField(
+                    controller: commentController,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ColorConstant.subTextColor, width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    child: Text(currentUser == null
-                        ? "Log in to Submit Review"
-                        : "Submit Review"),
                   ),
-                )
-              ],
+                  SizedBox(height: 12.0),
+                  Text(
+                    'Rating: ${rating.toStringAsFixed(1)}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: ColorConstant.subTextColor,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                  Slider(
+                    min: 1,
+                    max: 5,
+                    divisions: 4,
+                    value: rating,
+                    activeColor: ColorConstant.primaryColor,
+                    label: rating.toString(),
+                    onChanged: (value) {
+                      setState(() {
+                        rating = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16.0),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: handleSubmit,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 18.0, horizontal: 28.0),
+                        foregroundColor: ColorConstant.mainTextColor,
+                        backgroundColor: ColorConstant.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      child: Text(currentUser == null
+                          ? "Log in to Submit Review"
+                          : "Submit Review"),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

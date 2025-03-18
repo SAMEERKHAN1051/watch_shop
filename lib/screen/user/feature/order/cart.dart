@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:watch_shop/screen/user/widget/card/cartcard.dart';
-import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
+import 'package:watch_hub/screen/user/widget/card/cartcard.dart';
+import 'package:watch_hub/screen/user/widget/typography/screentitle.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -20,6 +20,7 @@ class _CartPageState extends State<CartPage> {
     _getCurrentUser();
   }
 
+  // Get the current authenticated user
   void _getCurrentUser() {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -29,7 +30,7 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
-  // REMOVE CART ITEM FUNCTION
+  // Remove cart item from Firestore
   void _removeCartItem(String docId) async {
     try {
       await FirebaseFirestore.instance.collection('cart').doc(docId).delete();

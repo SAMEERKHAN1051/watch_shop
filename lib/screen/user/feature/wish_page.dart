@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/user/widget/card/wishcard.dart';
-import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
+import 'package:watch_hub/screen/user/widget/card/wishcard.dart';
+import 'package:watch_hub/screen/user/widget/typography/screentitle.dart';
 
 class WishPage extends StatefulWidget {
   const WishPage({super.key});
@@ -38,7 +38,6 @@ class _WishPageState extends State<WishPage> {
       // Fetch only current user's wishlist
       final snapshot = await _db
           .collection('wishlist')
-          // .where('userId', isEqualTo: currentUser!.email) // ✅ Use UID
           .orderBy('createdAt', descending: true)
           .get(); // Use .get() instead of .snapshots()
 
@@ -82,28 +81,31 @@ class _WishPageState extends State<WishPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Screentitle(title: "Wish"),
-          const SizedBox(height: 10.0),
-          Expanded(
-            child: isLoading
+      body: SingleChildScrollView(
+        // Wrap the column with SingleChildScrollView to enable scrolling
+        child: Column(
+          children: [
+            const Screentitle(title: "Wish"),
+            const SizedBox(height: 10.0),
+            isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : wishlistItems.isEmpty
                     ? const Center(child: Text("No items in Wishlist"))
                     : ListView.builder(
+                        shrinkWrap:
+                            true, // Added shrinkWrap to prevent the ListView from taking full height
                         itemCount: wishlistItems.length,
                         itemBuilder: (context, index) {
                           final wish = wishlistItems[index];
                           return Wishcard(
                             title: wish['title'],
-                            favoriteBol: wish['favoriteBol'],
+                            favoriteBol: true,
                             time: wish['time'],
                           );
                         },
                       ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

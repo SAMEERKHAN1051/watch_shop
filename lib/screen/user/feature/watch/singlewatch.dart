@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/user/feature/review/addreview.dart';
-import 'package:watch_shop/screen/user/widget/typography/favoritetitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/user/feature/review/addreview.dart';
+import 'package:watch_hub/screen/user/widget/typography/favoritetitle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:watch_shop/utils/snackbar/snackbar.dart';
+import 'package:watch_hub/utils/snackbar/snackbar.dart';
 
 class SingleWatch extends StatefulWidget {
   final String id;
@@ -39,7 +39,7 @@ class _SingleWatchState extends State<SingleWatch> {
           watchName = doc['name'] ?? '';
           watchModel = doc['brand'] ?? '';
           watchDetails = doc['details'] ?? '';
-          // watchImage = doc['image'] ?? '';
+          // watchImage = doc['image'] ?? ''; // Uncomment if you fetch image from Firestore
           price = doc['price'] ?? 0;
           stock = doc['stock'] ?? 0;
         });
@@ -52,145 +52,143 @@ class _SingleWatchState extends State<SingleWatch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          FavoriteTitle(id: widget.id),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: watchImage.isNotEmpty
-                          ? Image.network(
-                              watchImage,
-                              height: 300,
-                              fit: BoxFit.cover,
-                            )
-                          : SizedBox(
-                              height: 300,
-                              child: Image.asset(
-                                  "assets/splash_screen_images/1.png",
-                                  fit: BoxFit.cover),
-                            ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              watchName,
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.bold,
-                                color: ColorConstant.textColor,
-                              ),
-                            ),
-                            const SizedBox(height: 1),
-                            Text(
-                              'Brand: $watchModel',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: ColorConstant.subTextColor,
-                              ),
-                            ),
-                            const SizedBox(height: 1),
-                            Text(
-                              'Stock: ${stock.toString()}/1000',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: ColorConstant.subTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '\$${price.toString()}',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                            color: ColorConstant.primaryColor,
+      body: SingleChildScrollView(
+        // Wrap the Column in SingleChildScrollView
+        child: Column(
+          children: [
+            FavoriteTitle(id: widget.id),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: watchImage.isNotEmpty
+                        ? Image.network(
+                            watchImage,
+                            height: 300,
+                            fit: BoxFit.cover,
+                          )
+                        : SizedBox(
+                            height: 300,
+                            child: Image.asset(
+                                "assets/splash_screen_images/1.png",
+                                fit: BoxFit.cover),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Details:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: ColorConstant.textColor,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            watchName,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold,
+                              color: ColorConstant.textColor,
+                            ),
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            'Brand: $watchModel',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstant.subTextColor,
+                            ),
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            'Stock: ${stock.toString()}/1000',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstant.subTextColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      watchDetails,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: ColorConstant.subTextColor,
+                      Text(
+                        '\$${price.toString()}',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                          color: ColorConstant.primaryColor,
+                        ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Details:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstant.textColor,
                     ),
-                    const SizedBox(height: 30),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              showQuantityDialog();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorConstant.primaryColor,
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    watchDetails,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstant.subTextColor,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showQuantityDialog();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorConstant.primaryColor,
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Text(
-                              'Add to Cart',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: ColorConstant.mainTextColor,
-                              ),
+                          ),
+                          child: Text(
+                            'Add to Cart',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: ColorConstant.mainTextColor,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: ColorConstant.primaryColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      AddReview(id: widget.id),
-                                ),
-                              );
-                            },
-                            icon: Icon(Icons.reviews,
-                                color: ColorConstant.mainTextColor),
-                          ),
+                      ),
+                      const SizedBox(width: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: ColorConstant.primaryColor,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddReview(id: widget.id),
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.reviews,
+                              color: ColorConstant.mainTextColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -202,8 +200,8 @@ class _SingleWatchState extends State<SingleWatch> {
       if (user != null) {
         String uid = user.uid;
 
-        CollectionReference cartRef = FirebaseFirestore.instance
-            .collection('cart');
+        CollectionReference cartRef =
+            FirebaseFirestore.instance.collection('cart');
         QuerySnapshot existing =
             await cartRef.where('watchId', isEqualTo: widget.id).get();
         if (existing.docs.isNotEmpty) {
@@ -213,7 +211,6 @@ class _SingleWatchState extends State<SingleWatch> {
             'updatedAt': FieldValue.serverTimestamp(),
           });
         } else {
-
           await cartRef.add({
             'watchId': widget.id,
             'userId': uid,

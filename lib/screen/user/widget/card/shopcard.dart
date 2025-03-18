@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/user/feature/watch/singlewatch.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/user/feature/watch/singlewatch.dart';
 
 class Shopcard extends StatefulWidget {
   final String title;

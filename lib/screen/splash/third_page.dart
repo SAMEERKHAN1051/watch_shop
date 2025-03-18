@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/auth/login_page.dart';
-import 'package:watch_shop/screen/auth/signup_page.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/auth/login_page.dart';
+import 'package:watch_hub/screen/auth/signup_page.dart';
 
 class ThirdPage extends StatelessWidget {
   const ThirdPage({super.key});

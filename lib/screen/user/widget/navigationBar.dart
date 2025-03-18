@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/user/feature/home_page.dart';
-import 'package:watch_shop/screen/user/feature/profile_page.dart';
-import 'package:watch_shop/screen/user/feature/shop_page.dart';
-import 'package:watch_shop/screen/user/feature/support_page.dart';
-import 'package:watch_shop/screen/user/feature/wish_page.dart';
-import 'package:watch_shop/screen/user/widget/navigationBar/navigationbarcurved.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/user/feature/home_page.dart';
+import 'package:watch_hub/screen/user/feature/profile_page.dart';
+import 'package:watch_hub/screen/user/feature/shop_page.dart';
+import 'package:watch_hub/screen/user/feature/support_page.dart';
+import 'package:watch_hub/screen/user/feature/wish_page.dart';
+import 'package:watch_hub/screen/user/widget/navigationBar/navigationbarcurved.dart';
 
 class Navigationbar extends StatefulWidget {
   const Navigationbar({super.key});

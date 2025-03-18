@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:watch_shop/constant/color_constant.dart';
+import 'package:watch_hub/constant/color_constant.dart';
 
 class AllSnackbar {
   static void errorSnackbar(String message) {

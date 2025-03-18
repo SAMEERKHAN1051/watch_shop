@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/user/UserPanel.dart';
-import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/user/UserPanel.dart';
+import 'package:watch_hub/screen/user/widget/typography/screentitle.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  const EditProfile({super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -26,7 +26,7 @@ class _EditProfileState extends State<EditProfile> {
 
   User? _currentUser;
   bool _isLoading = true;
-  String? _base64Image;  // To store the base64 image string
+  String? _base64Image; // To store the base64 image string
 
   @override
   void initState() {
@@ -56,7 +56,8 @@ class _EditProfileState extends State<EditProfile> {
           _nameController.text = data['displayName'] ?? '';
           _emailController.text = data['email'] ?? '';
           _phoneController.text = data['phone'] ?? '';
-          _base64Image = data['image'] ?? ''; // Fetch the image URL or base64 string
+          _base64Image =
+              data['image'] ?? ''; // Fetch the image URL or base64 string
           _isLoading = false;
         });
       }
@@ -103,7 +104,7 @@ class _EditProfileState extends State<EditProfile> {
           'displayName': _nameController.text,
           'email': _emailController.text,
           'phone': _phoneController.text,
-          'image': _base64Image,  // Save the base64 encoded image
+          'image': _base64Image, // Save the base64 encoded image
         });
         AllSnackbar.successSnackbar('Profile updated successfully');
         Navigator.pushReplacement(
@@ -121,91 +122,101 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                Screentitle(title: "Edit Profile"),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    key: _formKey,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        // Profile Image Uploader
-                        GestureDetector(
-                          onTap: () => _pickImage(ImageSource.gallery),
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage: _base64Image != null && _base64Image!.isNotEmpty
-                                ? MemoryImage(base64Decode(_base64Image!))  // Decode base64 and show image
-                                : AssetImage("assets/splash_screen_images/1.png") as ImageProvider,
-                            child: _base64Image == null || _base64Image!.isEmpty
-                                ? Icon(Icons.camera_alt, size: 30, color: ColorConstant.mainTextColor)
-                                : null,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        // Name Field
-                        _buildTextField(
-                          label: 'Name',
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your name';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 16),
-                        // Email Field
-                        _buildTextField(
-                          label: 'Email',
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                !value.contains('@')) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 16),
-                        // Phone Field
-                        _buildTextField(
-                          label: 'Phone Number',
-                          controller: _phoneController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 30),
-                        // Save Profile Button
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _saveProfile,
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 18.0),
-                              foregroundColor: ColorConstant.mainTextColor,
-                              textStyle: TextStyle(fontFamily: 'Poppins'),
-                              backgroundColor: ColorConstant.primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
+          : SingleChildScrollView(
+              // Wrap the entire body in a SingleChildScrollView
+              child: Column(
+                children: [
+                  Screentitle(title: "Edit Profile"),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      key: _formKey,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          // Profile Image Uploader
+                          GestureDetector(
+                            onTap: () => _pickImage(ImageSource.gallery),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: _base64Image != null &&
+                                      _base64Image!.isNotEmpty
+                                  ? MemoryImage(base64Decode(
+                                      _base64Image!)) // Decode base64 and show image
+                                  : AssetImage(
+                                          "assets/splash_screen_images/1.png")
+                                      as ImageProvider,
+                              child:
+                                  _base64Image == null || _base64Image!.isEmpty
+                                      ? Icon(Icons.camera_alt,
+                                          size: 30,
+                                          color: ColorConstant.mainTextColor)
+                                      : null,
                             ),
-                            child: Text("Save Profile"),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 16),
+                          // Name Field
+                          _buildTextField(
+                            label: 'Name',
+                            controller: _nameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your name';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          // Email Field
+                          _buildTextField(
+                            label: 'Email',
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !value.contains('@')) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          // Phone Field
+                          _buildTextField(
+                            label: 'Phone Number',
+                            controller: _phoneController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 30),
+                          // Save Profile Button
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: _saveProfile,
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 18.0),
+                                foregroundColor: ColorConstant.mainTextColor,
+                                textStyle: TextStyle(fontFamily: 'Poppins'),
+                                backgroundColor: ColorConstant.primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                              ),
+                              child: Text("Save Profile"),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
     );
   }

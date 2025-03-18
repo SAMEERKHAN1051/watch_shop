@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/user/UserPanel.dart';
-import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/user/UserPanel.dart';
+import 'package:watch_hub/screen/user/widget/typography/screentitle.dart';
 
 class OrderConfirmationPage extends StatefulWidget {
   final String watchId;
   final int quantity;
   const OrderConfirmationPage({
-    Key? key,
+    super.key,
     required this.watchId,
     required this.quantity,
-  }) : super(key: key);
+  });
 
   @override
   State<OrderConfirmationPage> createState() => _OrderConfirmationPageState();

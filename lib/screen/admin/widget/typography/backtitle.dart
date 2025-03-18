@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
+import 'package:watch_hub/constant/color_constant.dart';
 
 class BackTitle extends StatelessWidget implements PreferredSizeWidget {
   const BackTitle({super.key});

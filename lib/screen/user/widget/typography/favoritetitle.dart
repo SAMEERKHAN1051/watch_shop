@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/user/feature/order/cart.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/user/feature/order/cart.dart';
 
 class FavoriteTitle extends StatefulWidget implements PreferredSizeWidget {
   final String id;

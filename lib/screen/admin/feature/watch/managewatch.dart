@@ -5,11 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:image_picker/image_picker.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/admin/widget/typography/backtitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/admin/widget/typography/backtitle.dart';
 
 class ManageWatch extends StatefulWidget {
   final String? watchId;
@@ -47,24 +46,19 @@ class _ManageWatchState extends State<ManageWatch> {
 
     if (image != null) {
       if (kIsWeb) {
-        // Handle web platform
         Uint8List webImage = await image.readAsBytes();
         String base64String = base64Encode(webImage);
         setState(() {
-          base64Image = base64String; // Store the base64 string
+          base64Image = base64String;
         });
         AllSnackbar.successSnackbar("Image picked");
       } else {
-        // Handle mobile platform
         File mobileImage = File(image.path);
-        print("Mobile Image Picked: ${mobileImage.path}");
-
-        // Convert the mobile image to base64
         final bytes = await mobileImage.readAsBytes();
         String base64String = base64Encode(bytes);
 
         setState(() {
-          base64Image = base64String; // Store the base64 string
+          base64Image = base64String;
         });
 
         AllSnackbar.successSnackbar("Image picked");
@@ -78,7 +72,8 @@ class _ManageWatchState extends State<ManageWatch> {
     try {
       QuerySnapshot querySnapshot = await db.collection("brands").get();
       setState(() {
-        brandList = querySnapshot.docs.map((doc) => doc["name"].toString()).toList();
+        brandList =
+            querySnapshot.docs.map((doc) => doc["name"].toString()).toList();
       });
     } catch (e) {
       AllSnackbar.errorSnackbar("Error fetching brands: ${e.toString()}");
@@ -87,7 +82,8 @@ class _ManageWatchState extends State<ManageWatch> {
 
   void fetchWatchData() async {
     try {
-      DocumentSnapshot doc = await db.collection("watches").doc(widget.watchId).get();
+      DocumentSnapshot doc =
+          await db.collection("watches").doc(widget.watchId).get();
       if (doc.exists) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         setState(() {
@@ -169,7 +165,6 @@ class _ManageWatchState extends State<ManageWatch> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Image Picker Button
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: ElevatedButton(
@@ -178,21 +173,17 @@ class _ManageWatchState extends State<ManageWatch> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-
-                    // Display Image if picked
                     base64Image != null
                         ? Container(
                             padding: EdgeInsets.all(10.0),
                             child: Image.memory(
                               base64Decode(base64Image!),
-                              width: 150, // You can adjust the size
+                              width: 150,
                               height: 150,
                               fit: BoxFit.cover,
                             ),
                           )
-                        : Container(), // Empty container if no image is picked
-
-                    // Watch Name Field
+                        : Container(),
                     SizedBox(height: 16.0),
                     Text(
                       'Watch Name',
@@ -213,8 +204,6 @@ class _ManageWatchState extends State<ManageWatch> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-
-                    // Watch Detail Field
                     Text(
                       'Watch Detail',
                       style: TextStyle(
@@ -234,8 +223,6 @@ class _ManageWatchState extends State<ManageWatch> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-
-                    // Watch Price Field
                     Text(
                       'Watch Price',
                       style: TextStyle(
@@ -257,8 +244,6 @@ class _ManageWatchState extends State<ManageWatch> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-
-                    // Watch Stock Field
                     Text(
                       'Watch Stock',
                       style: TextStyle(
@@ -291,8 +276,6 @@ class _ManageWatchState extends State<ManageWatch> {
                       },
                     ),
                     SizedBox(height: 16.0),
-
-                    // Watch Rating Field
                     Text(
                       'Watch Rating',
                       style: TextStyle(
@@ -325,8 +308,6 @@ class _ManageWatchState extends State<ManageWatch> {
                       },
                     ),
                     SizedBox(height: 12.0),
-
-                    // Watch Brand Dropdown
                     Text(
                       'Watch Brand',
                       style: TextStyle(
@@ -362,8 +343,6 @@ class _ManageWatchState extends State<ManageWatch> {
                       },
                     ),
                     SizedBox(height: 16),
-
-                    // Watch Type Dropdown
                     Text(
                       'Watch Type',
                       style: TextStyle(
@@ -397,8 +376,6 @@ class _ManageWatchState extends State<ManageWatch> {
                       },
                     ),
                     SizedBox(height: 16),
-
-                    // Submit Button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(

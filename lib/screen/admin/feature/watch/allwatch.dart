@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:watch_shop/screen/admin/feature/watch/managewatch.dart';
-import 'package:watch_shop/screen/admin/widget/card/shopcard.dart';
-import 'package:watch_shop/screen/admin/widget/typography/screentitle.dart';
-import 'package:watch_shop/screen/admin/widget/typography/titlebutton.dart';
+import 'package:watch_hub/screen/admin/feature/watch/managewatch.dart';
+import 'package:watch_hub/screen/admin/widget/card/shopcard.dart';
+import 'package:watch_hub/screen/admin/widget/typography/screentitle.dart';
+import 'package:watch_hub/screen/admin/widget/typography/titlebutton.dart';
 
 class Allwatch extends StatefulWidget {
   const Allwatch({super.key});
@@ -98,7 +98,7 @@ class _AllwatchState extends State<Allwatch> {
                     price: doc['price'],
                     brand: doc['brand'],
                     id: doc.id,
-                    image : doc['image']
+                    image: doc['image'],
                   );
                 },
               );

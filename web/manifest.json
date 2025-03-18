@@ -1,6 +1,6 @@
 {
-    "name": "watch_shop",
-    "short_name": "watch_shop",
+    "name": "watch_hub",
+    "short_name": "watch_hub",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

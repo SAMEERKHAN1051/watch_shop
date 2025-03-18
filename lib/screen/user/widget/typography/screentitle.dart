@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/user/feature/order/cart.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/user/feature/order/cart.dart';
 
 class Screentitle extends StatefulWidget {
   final String title;

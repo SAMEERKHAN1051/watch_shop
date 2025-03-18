@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/admin/widget/card/usercard.dart';
-import 'package:watch_shop/screen/admin/widget/typography/screentitle.dart';
+import 'package:watch_hub/screen/admin/widget/card/usercard.dart';
+import 'package:watch_hub/screen/admin/widget/typography/screentitle.dart';
 
 class Userlist extends StatefulWidget {
   const Userlist({super.key});

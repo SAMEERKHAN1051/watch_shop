@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/admin/widget/typography/backtitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/admin/widget/typography/backtitle.dart';
 
 class ManageBrand extends StatefulWidget {
   final String? brandId;
@@ -21,11 +21,10 @@ class _ManageBrandState extends State<ManageBrand> {
   void initState() {
     super.initState();
     if (widget.brandId != null) {
-      fetchWatchData(); // Fetch data if updating
+      fetchWatchData();
     }
   }
 
-  // Fetch existing watch data for update
   void fetchWatchData() async {
     try {
       DocumentSnapshot doc =
@@ -71,58 +70,60 @@ class _ManageBrandState extends State<ManageBrand> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          BackTitle(),
-          Container(
-            color: ColorConstant.mainTextColor,
-            padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 22.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 16.0),
-                Text(
-                  'Brand Name',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorConstant.subTextColor,
-                    fontFamily: "Poppins",
-                  ),
-                ),
-                TextField(
-                  controller: brandName,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: ColorConstant.subTextColor, width: 1.0),
-                      borderRadius: BorderRadius.circular(10.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            BackTitle(),
+            Container(
+              color: ColorConstant.mainTextColor,
+              padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 22.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.0),
+                  Text(
+                    'Brand Name',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: ColorConstant.subTextColor,
+                      fontFamily: "Poppins",
                     ),
                   ),
-                ),
-                SizedBox(height: 12.0),
-                SizedBox(
-                  width: double.infinity, // Makes the button take up full width
-                  child: ElevatedButton(
-                    onPressed: handleSubmit,
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 18.0, horizontal: 28.0),
-                      foregroundColor: ColorConstant.mainTextColor,
-                      textStyle: TextStyle(fontFamily: 'Poppins'),
-                      backgroundColor: ColorConstant.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
+                  TextField(
+                    controller: brandName,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ColorConstant.subTextColor, width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    child: Text(
-                      widget.brandId == null ? "Add New Brand" : "Edit Brand",
-                    ),
                   ),
-                )
-              ],
+                  SizedBox(height: 12.0),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: handleSubmit,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 18.0, horizontal: 28.0),
+                        foregroundColor: ColorConstant.mainTextColor,
+                        textStyle: TextStyle(fontFamily: 'Poppins'),
+                        backgroundColor: ColorConstant.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      child: Text(
+                        widget.brandId == null ? "Add New Brand" : "Edit Brand",
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

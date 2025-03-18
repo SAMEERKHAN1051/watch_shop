@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/user/feature/shop_page.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/user/feature/shop_page.dart';
 
 class HomeCard extends StatelessWidget {
   final String title;
@@ -48,7 +48,7 @@ class HomeCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Total: ${length}"
+                    "Total: $length"
                     ,
                     style: TextStyle(
                       fontSize: 22,

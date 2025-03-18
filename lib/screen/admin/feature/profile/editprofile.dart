@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/admin/adminpanel.dart';
-import 'package:watch_shop/screen/admin/widget/snackbar/snaclbar.dart';
-import 'package:watch_shop/screen/admin/widget/typography/backtitle.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/admin/adminpanel.dart';
+import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
+import 'package:watch_hub/screen/admin/widget/typography/backtitle.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  const EditProfile({super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -88,7 +88,7 @@ class _EditProfileState extends State<EditProfile> {
           _emailController.text = data['email'] ?? '';
           _phoneController.text = data['phone'] ?? '';
           _isLoading = false;
-          base64Image = data['image'] ?? null;
+          base64Image = data['image'];
         });
       }
     }
@@ -122,94 +122,98 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                BackTitle(),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    key: _formKey,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: ElevatedButton(
-                            onPressed: () => pickimage(ImageSource.gallery),
-                            child: Text('Pick Image'),
-                          ),
-                        ),
-                        if (_pickedImage != null)
-                          Image.file(
-                            _pickedImage!,
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          )
-                        else if (base64Image != null)
-                          Image.memory(
-                            base64Decode(base64Image!),
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
-                        SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'Name',
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your name';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'Email',
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                !value.contains('@')) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 16),
-                        _buildTextField(
-                          label: 'Phone Number',
-                          controller: _phoneController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 30),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _saveProfile,
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 18.0),
-                              foregroundColor: ColorConstant.mainTextColor,
-                              textStyle: TextStyle(fontFamily: 'Poppins'),
-                              backgroundColor: ColorConstant.primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
+          : SingleChildScrollView(
+              // Wrap in SingleChildScrollView for responsiveness
+              child: Column(
+                children: [
+                  BackTitle(),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        // Use Column instead of ListView for vertical scrolling inside SingleChildScrollView
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: ElevatedButton(
+                              onPressed: () => pickimage(ImageSource.gallery),
+                              child: Text('Pick Image'),
                             ),
-                            child: Text("Edit Profile"),
                           ),
-                        ),
-                      ],
+                          if (_pickedImage != null)
+                            Image.file(
+                              _pickedImage!,
+                              height: 150,
+                              width: 150,
+                              fit: BoxFit.cover,
+                            )
+                          else if (base64Image != null)
+                            Image.memory(
+                              base64Decode(base64Image!),
+                              height: 150,
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
+                          SizedBox(height: 16),
+                          _buildTextField(
+                            label: 'Name',
+                            controller: _nameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your name';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          _buildTextField(
+                            label: 'Email',
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !value.contains('@')) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16),
+                          _buildTextField(
+                            label: 'Phone Number',
+                            controller: _phoneController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 30),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: _saveProfile,
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 18.0),
+                                foregroundColor: ColorConstant.mainTextColor,
+                                textStyle: TextStyle(fontFamily: 'Poppins'),
+                                backgroundColor: ColorConstant.primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                              ),
+                              child: Text("Edit Profile"),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
     );
   }

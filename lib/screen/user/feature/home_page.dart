@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/user/widget/card/homecard.dart';
-import 'package:watch_shop/screen/user/widget/typography/homescreentitle.dart';
+import 'package:watch_hub/screen/user/widget/card/homecard.dart';
+import 'package:watch_hub/screen/user/widget/typography/homescreentitle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
@@ -51,11 +51,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Homescreentitle(),
-          Expanded(
-            child: Padding(
+      body: SingleChildScrollView(
+        // Wrapping everything in SingleChildScrollView
+        child: Column(
+          children: [
+            const Homescreentitle(),
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: brandData.isEmpty
                   ? const Center(child: CircularProgressIndicator())
@@ -65,10 +66,12 @@ class _HomePageState extends State<HomePage> {
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
-                        childAspectRatio: 3 / 2, 
+                        childAspectRatio: 3 / 2,
                       ),
                       itemCount: brandData.length,
                       physics: const BouncingScrollPhysics(),
+                      shrinkWrap:
+                          true, // Ensures the grid doesn't take up infinite space
                       itemBuilder: (context, index) {
                         final brand = brandData[index];
                         return HomeCard(
@@ -79,8 +82,8 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

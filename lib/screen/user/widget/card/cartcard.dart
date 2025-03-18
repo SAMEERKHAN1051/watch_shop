@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/user/feature/order/order.dart';
-import 'package:watch_shop/screen/user/feature/watch/singlewatch.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/user/feature/order/order.dart';
+import 'package:watch_hub/screen/user/feature/watch/singlewatch.dart';
 
 class CartCard extends StatefulWidget {
   final String title;

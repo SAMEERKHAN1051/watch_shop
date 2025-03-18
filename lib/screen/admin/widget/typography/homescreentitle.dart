@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:watch_shop/constant/color_constant.dart';
+import 'package:watch_hub/constant/color_constant.dart';
 
 class Homescreentitle extends StatefulWidget {
   const Homescreentitle({super.key});

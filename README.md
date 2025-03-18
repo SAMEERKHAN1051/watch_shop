@@ -1,4 +1,4 @@
-# watch_shop
+# watch_hub
 
 A new Flutter project.
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/user/widget/typography/screentitle.dart';
+import 'package:watch_hub/screen/user/widget/typography/screentitle.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -7,15 +7,16 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Screentitle(title: "Privacy Policy"),
-          const SizedBox(height: 20),
-          Expanded(
-            child: Padding(
+      body: SingleChildScrollView(
+        // Add SingleChildScrollView to make it scrollable
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Screentitle(title: "Privacy Policy"),
+            const SizedBox(height: 20),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ListView(
+              child: Column(
                 children: const [
                   Text(
                     "1. Data Collection",
@@ -65,8 +66,8 @@ class SettingPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

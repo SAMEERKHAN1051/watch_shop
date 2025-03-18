@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/constant/color_constant.dart';
-import 'package:watch_shop/screen/splash/second_page.dart';
-import 'package:watch_shop/screen/splash/third_page.dart';
+import 'package:watch_hub/constant/color_constant.dart';
+import 'package:watch_hub/screen/splash/second_page.dart';
+import 'package:watch_hub/screen/splash/third_page.dart';
 
 class FirstPage extends StatelessWidget {
   const FirstPage({super.key});

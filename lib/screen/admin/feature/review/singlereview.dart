@@ -26,7 +26,6 @@ class SingleReview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // User's Name
                 Row(
                   children: [
                     const Icon(Icons.person, color: Colors.blue, size: 28),
@@ -41,8 +40,6 @@ class SingleReview extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-
-                // User's Email
                 Row(
                   children: [
                     const Icon(Icons.email, color: Colors.grey, size: 20),
@@ -57,8 +54,6 @@ class SingleReview extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                // Rating
                 Row(
                   children: [
                     const Icon(Icons.star, color: Colors.amber, size: 20),
@@ -73,8 +68,6 @@ class SingleReview extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                // Review Comment
                 const Text(
                   'Comment:',
                   style: TextStyle(
@@ -88,8 +81,6 @@ class SingleReview extends StatelessWidget {
                   style: const TextStyle(fontSize: 16, color: Colors.black87),
                 ),
                 const SizedBox(height: 20),
-
-               
               ],
             ),
           );

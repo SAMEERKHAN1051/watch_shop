@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:watch_shop/screen/admin/feature/brand/allbrand.dart';
-import 'package:watch_shop/screen/admin/feature/order/allorder.dart';
-import 'package:watch_shop/screen/admin/feature/user/userlist.dart';
-import 'package:watch_shop/screen/admin/feature/watch/allwatch.dart';
-import 'package:watch_shop/screen/admin/widget/card/dashboardcard.dart';
-import 'package:watch_shop/screen/admin/widget/typography/screentitle.dart';
-import 'package:watch_shop/service/dashboradservice.dart';
+import 'package:watch_hub/screen/admin/feature/brand/allbrand.dart';
+import 'package:watch_hub/screen/admin/feature/order/allorder.dart';
+import 'package:watch_hub/screen/admin/feature/user/userlist.dart';
+import 'package:watch_hub/screen/admin/feature/watch/allwatch.dart';
+import 'package:watch_hub/screen/admin/widget/card/dashboardcard.dart';
+import 'package:watch_hub/screen/admin/widget/typography/screentitle.dart';
+import 'package:watch_hub/service/dashboradservice.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
