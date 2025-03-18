@@ -169,7 +169,7 @@ class _ShopPageState extends State<ShopPage> {
                   itemCount: filteredWatches.length,
                   itemBuilder: (context, index) {
                     var doc = filteredWatches[index];
-                    print(doc);
+                    
                     return Shopcard(
                       title: doc['name'] ?? 'Unnamed Watch',
                       price: doc['price'] ?? 0.0,
