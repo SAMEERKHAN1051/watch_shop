@@ -17,12 +17,13 @@ class _ShopPageState extends State<ShopPage> {
   String selectedBrand = "All";
   RangeValues selectedPriceRange = const RangeValues(0, 5000);
   List<String> availableBrands = [];
+  List<QueryDocumentSnapshot> allWatches = [];
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(() {
-      setState(() {});
+      setState(() {}); // Rebuild when search changes
     });
   }
 
@@ -44,14 +45,12 @@ class _ShopPageState extends State<ShopPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text('Filters',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   DropdownButton<String>(
                     value: selectedBrand,
                     isExpanded: true,
                     items: ['All', ...availableBrands]
-                        .map((brand) =>
-                            DropdownMenuItem(value: brand, child: Text(brand)))
+                        .map((brand) => DropdownMenuItem(value: brand, child: Text(brand)))
                         .toList(),
                     onChanged: (value) {
                       setModalState(() {
@@ -65,7 +64,7 @@ class _ShopPageState extends State<ShopPage> {
                   RangeSlider(
                     values: selectedPriceRange,
                     min: 0,
-                    max: 5000,
+                    max: 500000,
                     divisions: 50,
                     labels: RangeLabels(
                       '\$${selectedPriceRange.start.round()}',
@@ -81,7 +80,7 @@ class _ShopPageState extends State<ShopPage> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      setState(() {});
+                      setState(() {}); // Rebuild to apply the filter
                     },
                     child: const Text("Apply Filters"),
                   ),
@@ -94,11 +93,30 @@ class _ShopPageState extends State<ShopPage> {
     );
   }
 
+  List<QueryDocumentSnapshot> _applyFilters(List<QueryDocumentSnapshot> watches) {
+    return watches.where((watch) {
+      String name = watch['name']?.toString().toLowerCase() ?? '';
+      String brand = watch['brand']?.toString().toLowerCase() ?? '';
+      double price = (watch['price'] as double?) ?? 0.0;
+      print(price);
+
+      bool matchesSearch = _searchController.text.isEmpty ||
+          name.contains(_searchController.text.toLowerCase()) ||
+          brand.contains(_searchController.text.toLowerCase());
+
+      bool matchesBrand = selectedBrand == "All" || brand == selectedBrand.toLowerCase();
+
+      bool matchesPriceRange = price >= selectedPriceRange.start &&
+          price <= selectedPriceRange.end;
+
+      return matchesSearch && matchesBrand && matchesPriceRange ;
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        // Added scroll view here
         child: Column(
           children: [
             Screentitle(title: "Shop"),
@@ -127,8 +145,7 @@ class _ShopPageState extends State<ShopPage> {
             ),
             const SizedBox(height: 10),
             StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('watches').snapshots(),
+              stream: FirebaseFirestore.instance.collection('watches').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -141,35 +158,25 @@ class _ShopPageState extends State<ShopPage> {
                 }
 
                 var doc = snapshot.data!.docs;
-                print('Data fetched: ${snapshot.data!.docs.length} items');
+                print('Data fetched: ${doc.length} items');
 
-                var allDocs = snapshot.data!.docs;
+                // Update availableBrands only once when the data changes
+                if (allWatches.isEmpty) {
+                  allWatches = doc;
+                  availableBrands = allWatches
+                      .map((watch) => watch['brand']?.toString() ?? 'Unknown')
+                      .toSet()
+                      .toList();
+                }
 
-                availableBrands = allDocs
-                    .map((doc) => doc['brand']?.toString() ?? 'Unknown')
-                    .toSet()
-                    .toList();
-
-                var filteredWatches = allDocs.where((watch) {
-                  String name = watch['name']?.toString().toLowerCase() ?? '';
-                  String brand = watch['brand']?.toString().toLowerCase() ?? '';
-                  double price = (watch['price'] as double?) ?? 0.0;
-
-                  bool matchesSearch = _searchController.text.isEmpty ||
-                      name.contains(_searchController.text.toLowerCase()) ||
-                      brand.contains(_searchController.text.toLowerCase());
-
-                  return matchesSearch;
-                }).toList();
-
-                print(filteredWatches);
+                var filteredWatches = _applyFilters(allWatches);
 
                 return ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   itemCount: filteredWatches.length,
                   itemBuilder: (context, index) {
                     var doc = filteredWatches[index];
-                    
+
                     return Shopcard(
                       title: doc['name'] ?? 'Unnamed Watch',
                       price: doc['price'] ?? 0.0,
@@ -178,6 +185,8 @@ class _ShopPageState extends State<ShopPage> {
                       id: doc.id,
                     );
                   },
+                  physics: const NeverScrollableScrollPhysics(), // Prevent inner scrolling
+                  shrinkWrap: true, // Use shrinkWrap to adapt height
                 );
               },
             ),

@@ -5,6 +5,7 @@ import 'package:watch_hub/constant/color_constant.dart';
 import 'package:watch_hub/screen/admin/adminpanel.dart';
 import 'package:watch_hub/screen/splash/first_page.dart';
 import 'package:watch_hub/screen/user/UserPanel.dart';
+import 'package:watch_hub/screen/user/feature/shop_page.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => FirstPage()),
+        GetPage(name: '/', page: () => ShopPage()),
         GetPage(name: '/userPanel', page: () => UserPanelScreen()),
         GetPage(name: '/adminPanel', page: () => AdminPanelScreen()),
       ],
