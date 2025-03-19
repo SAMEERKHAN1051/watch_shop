@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:watch_hub/screen/auth/login_page.dart';
@@ -15,6 +18,40 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  User? _currentUser;
+  String _userName = '';
+  String _userImage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  // Fetch current user's data from Firebase Auth and Firestore
+  Future<void> _fetchUserData() async {
+    _currentUser = FirebaseAuth.instance.currentUser;
+
+    if (_currentUser != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_currentUser!.uid)
+          .get();
+
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+
+        setState(() {
+          _userName = data['displayName'] ??
+              _currentUser!.displayName ??
+              'User'; // Use Firestore name or Firebase name if available
+          _userImage = data['image'] ??
+              ''; // Assuming image URL or base64 string is stored
+        });
+      }
+    }
+  }
+
   Future<void> _logout() async {
     await FirebaseAuth.instance.signOut();
     Navigator.push(
@@ -36,15 +73,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Center(
                     child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.transparent,
+                      radius: 20,
                       child: ClipOval(
-                        child: Image.asset(
-                          'assets/splash_screen_images/1.png',
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ),
+                        child: _userImage.isNotEmpty
+                            ? Image.memory(
+                                base64Decode(_userImage),
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                "assets/splash_screen_images/1.png",
+                                width: 120,
+                                height: 120          ,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                   ),

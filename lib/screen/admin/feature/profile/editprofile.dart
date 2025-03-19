@@ -10,6 +10,7 @@ import 'package:watch_hub/constant/color_constant.dart';
 import 'package:watch_hub/screen/admin/adminpanel.dart';
 import 'package:watch_hub/screen/admin/widget/snackbar/snaclbar.dart';
 import 'package:watch_hub/screen/admin/widget/typography/backtitle.dart';
+import 'package:watch_hub/screen/admin/widget/typography/screentitle.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -126,7 +127,7 @@ class _EditProfileState extends State<EditProfile> {
               // Wrap in SingleChildScrollView for responsiveness
               child: Column(
                 children: [
-                  BackTitle(),
+                  Screentitle(title: "Edit Profile"),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Form(

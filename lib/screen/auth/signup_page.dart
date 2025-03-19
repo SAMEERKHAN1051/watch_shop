@@ -220,7 +220,7 @@ class _SignupPageState extends State<SignupPage> {
                       },
                     ),
                     Container(
-                      width: 400,
+                      width: 300,
                       margin: EdgeInsets.only(top: 15.0),
                       child: Text(
                         'By creating an account you have to agree with our them & condication.',

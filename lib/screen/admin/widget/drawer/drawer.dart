@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:watch_hub/constant/color_constant.dart';
@@ -17,25 +20,33 @@ class AdminDrawer extends StatefulWidget {
 }
 
 class _AdminScreenState extends State<AdminDrawer> {
-  Widget _selectedScreen = AdminDashboard(); // Default screen
+  Widget _selectedScreen = AdminDashboard();
   String userName = "Admin Name";
   String userEmail = "admin@example.com";
-  String? profileImage;
+  String profileImage = "";
+  User? _currentUser;
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _fetchUserData();
   }
 
-  void _loadUserData() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      setState(() {
-        userName = user.displayName ?? "Admin Name";
-        userEmail = user.email ?? "admin@example.com";
-        profileImage = user.photoURL; // Get profile image if available
-      });
+  Future<void> _fetchUserData() async {
+    _currentUser = FirebaseAuth.instance.currentUser;
+    if (_currentUser != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_currentUser!.uid)
+          .get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        setState(() {
+          userName = data['displayName'] ?? 'Guest';
+          userEmail = data['email'] ?? 'Guest';
+          profileImage = data['image'] ?? 'assets/default_profile_image.png';
+        });
+      }
     }
   }
 
@@ -49,6 +60,9 @@ class _AdminScreenState extends State<AdminDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Admin Panel'),
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -59,12 +73,22 @@ class _AdminScreenState extends State<AdminDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 30,
-                    backgroundImage: profileImage != null
-                        ? NetworkImage(
-                            profileImage!) // Use Firebase profile image
-                        : AssetImage("assets/splash_screen_images/1.png")
-                            as ImageProvider,
+                    radius: 20,
+                    child: ClipOval(
+                      child: profileImage.isNotEmpty
+                          ? Image.memory(
+                              base64Decode(profileImage),
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              "assets/splash_screen_images/1.png",
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
                   ),
                   SizedBox(height: 10),
                   Text(userName,
@@ -74,14 +98,13 @@ class _AdminScreenState extends State<AdminDrawer> {
                 ],
               ),
             ),
+            _buildDrawerItem(Icons.dashboard, "Dashboard", AdminDashboard()),
             _buildDrawerItem(Icons.people, "Manage Users", Userlist()),
             _buildDrawerItem(Icons.watch, "Manage Watch", Allwatch()),
             _buildDrawerItem(
                 Icons.branding_watermark, "Manage Brand", AllBrand()),
-            _buildDrawerItem(
-                Icons.trolley, "Manage Orders", AllOrder()),
-            _buildDrawerItem(
-                Icons.reviews, "Manage Review", AllReview()),
+            _buildDrawerItem(Icons.trolley, "Manage Orders", AllOrder()),
+            _buildDrawerItem(Icons.reviews, "Manage Review", AllReview()),
             _buildDrawerItem(Icons.person, "Manage Profile", EditProfile()),
             Divider(),
             ListTile(

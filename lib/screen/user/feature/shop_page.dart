@@ -15,7 +15,7 @@ class _ShopPageState extends State<ShopPage> {
   final TextEditingController _searchController = TextEditingController();
 
   String selectedBrand = "All";
-  RangeValues selectedPriceRange = const RangeValues(0, 5000);
+  RangeValues selectedPriceRange = const RangeValues(0, 500000);
   List<String> availableBrands = [];
   List<QueryDocumentSnapshot> allWatches = [];
 
@@ -45,12 +45,14 @@ class _ShopPageState extends State<ShopPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text('Filters',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   DropdownButton<String>(
                     value: selectedBrand,
                     isExpanded: true,
                     items: ['All', ...availableBrands]
-                        .map((brand) => DropdownMenuItem(value: brand, child: Text(brand)))
+                        .map((brand) =>
+                            DropdownMenuItem(value: brand, child: Text(brand)))
                         .toList(),
                     onChanged: (value) {
                       setModalState(() {
@@ -64,7 +66,7 @@ class _ShopPageState extends State<ShopPage> {
                   RangeSlider(
                     values: selectedPriceRange,
                     min: 0,
-                    max: 500000,
+                    max: 5000000,
                     divisions: 50,
                     labels: RangeLabels(
                       '\$${selectedPriceRange.start.round()}',
@@ -93,23 +95,25 @@ class _ShopPageState extends State<ShopPage> {
     );
   }
 
-  List<QueryDocumentSnapshot> _applyFilters(List<QueryDocumentSnapshot> watches) {
+  List<QueryDocumentSnapshot> _applyFilters(
+      List<QueryDocumentSnapshot> watches) {
     return watches.where((watch) {
       String name = watch['name']?.toString().toLowerCase() ?? '';
       String brand = watch['brand']?.toString().toLowerCase() ?? '';
-      double price = (watch['price'] as double?) ?? 0.0;
+      int price = watch['price'] ?? 0.0;
       print(price);
 
       bool matchesSearch = _searchController.text.isEmpty ||
           name.contains(_searchController.text.toLowerCase()) ||
           brand.contains(_searchController.text.toLowerCase());
 
-      bool matchesBrand = selectedBrand == "All" || brand == selectedBrand.toLowerCase();
+      bool matchesBrand =
+          selectedBrand == "All" || brand == selectedBrand.toLowerCase();
 
-      bool matchesPriceRange = price >= selectedPriceRange.start &&
-          price <= selectedPriceRange.end;
+      bool matchesPriceRange =
+          price >= selectedPriceRange.start && price <= selectedPriceRange.end;
 
-      return matchesSearch && matchesBrand && matchesPriceRange ;
+      return matchesSearch && matchesBrand && matchesPriceRange;
     }).toList();
   }
 
@@ -145,7 +149,8 @@ class _ShopPageState extends State<ShopPage> {
             ),
             const SizedBox(height: 10),
             StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('watches').snapshots(),
+              stream:
+                  FirebaseFirestore.instance.collection('watches').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -185,7 +190,8 @@ class _ShopPageState extends State<ShopPage> {
                       id: doc.id,
                     );
                   },
-                  physics: const NeverScrollableScrollPhysics(), // Prevent inner scrolling
+                  physics:
+                      const NeverScrollableScrollPhysics(), // Prevent inner scrolling
                   shrinkWrap: true, // Use shrinkWrap to adapt height
                 );
               },
